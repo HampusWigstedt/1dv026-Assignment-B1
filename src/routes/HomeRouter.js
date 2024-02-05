@@ -1,7 +1,7 @@
 /**
  * @file Defines the home router.
  * @module homeRouter
- * @author Hampus Jonsson Vigstedt
+ * @author Mats Loock
  */
 
 import express from 'express'

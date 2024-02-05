@@ -1,18 +1,18 @@
 /**
  * @file Defines the main router.
  * @module router
- * @author Hampus Jonsson Vigstedt
+ * @author Mats Loock
  */
 
 import express from 'express'
 import http from 'node:http'
 import { router as homeRouter } from './homeRouter.js'
-import { router as taskRouter } from './taskRouter.js'
+import { router as snippetRouter } from './snippetRouter.js'
 
 export const router = express.Router()
 
 router.use('/', homeRouter)
-router.use('/tasks', taskRouter)
+router.use('/snippets', snippetRouter)
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => {
