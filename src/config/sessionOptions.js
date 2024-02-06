@@ -1,7 +1,7 @@
 /**
  * @file This module contains the options object for the session middleware.
  * @module sessionOptions
- * @author Mats Loock
+ * @author Hampus Vigstedt
  * @see {@link https://github.com/expressjs/session}
  */
 

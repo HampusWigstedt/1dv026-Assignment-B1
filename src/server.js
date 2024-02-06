@@ -1,7 +1,7 @@
 /**
  * @file Defines the main application.
  * @module server
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 import express from 'express'

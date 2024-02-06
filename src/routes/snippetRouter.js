@@ -1,7 +1,7 @@
 /**
  * @file Defines the snippet router.
  * @module snippetRouter
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 // src/routes/snippetRouter.js
 import express from 'express'

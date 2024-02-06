@@ -1,7 +1,7 @@
 /**
  * @file Defines the snippet model.
  * @module snippetModel
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 import mongoose from 'mongoose'

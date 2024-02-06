@@ -1,7 +1,7 @@
 /**
  * @file Defines the HomeController class.
  * @module HomeController
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 /**

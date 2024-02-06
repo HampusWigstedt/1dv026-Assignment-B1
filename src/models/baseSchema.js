@@ -1,7 +1,7 @@
 /**
  * @file Defines the base schema.
  * @module baseSchema
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 import mongoose from 'mongoose'

@@ -1,7 +1,7 @@
 /**
  * @file Defines the snippetController class.
  * @module snippetController
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 import { snippetModel } from '../models/SnippetModel.js'

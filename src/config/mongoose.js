@@ -1,7 +1,7 @@
 /**
  * @file This module contains the configuration for the Mongoose ODM.
  * @module mongoose
- * @author Mats Loock
+ * @author Hampus Vigstedt
  */
 
 import mongoose from 'mongoose'
