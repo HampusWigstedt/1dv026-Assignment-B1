@@ -12,6 +12,7 @@ import { router as homeRouter } from './homeRouter.js'
 import { router as snippetRouter } from './snippetRouter.js'
 import { router as registerRouter } from './registerRouter.js'
 
+
 const router = express.Router()
 
 /**
@@ -23,7 +24,7 @@ const router = express.Router()
  */
 function checkAuth (req, res, next) {
   if (!req.session.userId) {
-    res.redirect('/login')
+    res.redirect('/')
   } else {
     next()
   }
@@ -45,21 +46,6 @@ router.post('/register', async (req, res) => {
   res.redirect('/') // redirect to your default page
 })
 
-// Login route
-router.get('/login', (req, res) => {
-  res.render('login') // replace with your login EJS view
-})
-
-router.post('/login', async (req, res) => {
-  const user = await User.findOne({ username: req.body.username })
-  const auth = await bcrypt.compare(req.body.password, user.password)
-  if (auth) {
-    req.session.userId = user._id
-    res.redirect('/') // redirect to your default page
-  } else {
-    res.redirect('/login')
-  }
-})
 
 // Logout route
 router.get('/logout', (req, res) => {

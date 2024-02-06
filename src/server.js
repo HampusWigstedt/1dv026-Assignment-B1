@@ -1,12 +1,7 @@
-/**
- * @file Defines the main application.
- * @module server
- * @author Hampus Vigstedt
- */
-
 import express from 'express'
 import expressLayouts from 'express-ejs-layouts'
 import session from 'express-session'
+import flash from 'connect-flash'
 import logger from 'morgan'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -50,6 +45,9 @@ try {
     app.set('trust proxy', 1) // trust first proxy
   }
   app.use(session(sessionOptions))
+
+  // Add this line to use connect-flash middleware
+  app.use(flash())
 
   // Middleware to be executed before the routes.
   app.use((req, res, next) => {
