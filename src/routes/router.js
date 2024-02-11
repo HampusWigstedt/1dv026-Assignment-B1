@@ -12,7 +12,6 @@ import { router as homeRouter } from './homeRouter.js'
 import { router as snippetRouter } from './snippetRouter.js'
 import { router as registerRouter } from './registerRouter.js'
 
-
 const router = express.Router()
 
 /**
@@ -44,13 +43,6 @@ router.post('/register', async (req, res) => {
   await user.save()
   req.session.userId = user._id
   res.redirect('/') // redirect to your default page
-})
-
-
-// Logout route
-router.get('/logout', (req, res) => {
-  req.session.destroy()
-  res.redirect('/login')
 })
 
 // Protected route example

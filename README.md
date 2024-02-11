@@ -34,3 +34,7 @@ Feel free to add functionality to the application and get an extra plus on the a
 
 - Add support for tagging each snippet with one or more tags.
 - Add support for showing snippets belonging to one tag or/and one user.
+
+
+
+Något är fel när man loggar in. Jag vill bli skickad till snippets men blir inte skickad någonstans..
