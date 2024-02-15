@@ -11,6 +11,7 @@ import { User } from '../models/UserModel.js'
 import { router as homeRouter } from './homeRouter.js'
 import { router as snippetRouter } from './snippetRouter.js'
 import { router as registerRouter } from './registerRouter.js'
+import { router as loginRouter } from './loginRouter.js'
 
 const router = express.Router()
 
@@ -52,7 +53,8 @@ router.get('/protected', checkAuth, (req, res) => {
 
 router.use('/', homeRouter)
 router.use('/snippets', snippetRouter)
-router.use('/register', registerRouter)
+router.use(registerRouter)
+router.use(loginRouter)
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => {

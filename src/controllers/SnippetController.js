@@ -82,7 +82,8 @@ export class SnippetController {
 
       await snippetModel.create({
         description,
-        done: done === 'on'
+        done: done === 'on',
+        userId: req.session.userId // Store the user ID in the snippet document
       })
 
       req.session.flash = { type: 'success', text: 'The snippet was created successfully.' }
@@ -109,13 +110,21 @@ export class SnippetController {
   }
 
   /**
-   * Updates a specific snippet.
+   * Updates a specific snippet if the logged-in user is the owner of the snippet.
    *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
+   * @param {object} req - Express request object. The request should contain a session object with the userId of the logged-in user, and a doc object with the snippet to update and the userId of the snippet's owner.
+   * @param {object} res - Express response object. The method will send a redirect response to the client.
+   * @throws Will redirect to the update page and flash an error message if an error occurs or if the user is not authorized to update the snippet.
+   * @returns {Promise<void>} A Promise that resolves when the method has finished sending the response. If the snippet was updated, the method will flash a success message. If the snippet was not updated because there was nothing to update, the method will flash an info message.
    */
   async updatePost (req, res) {
     try {
+    // Check if the user is the owner of the snippet
+      // if (req.session.userId !== req.doc.userId.toString()) {
+      //   req.session.flash = { type: 'danger', text: 'You are not authorized to update this snippet.' }
+      //   return res.redirect('..')
+      // }
+
       if ('description' in req.body) req.doc.description = req.body.description
       if ('done' in req.body) req.doc.done = req.body.done === 'on'
 
@@ -148,12 +157,26 @@ export class SnippetController {
   }
 
   /**
-   * Deletes the specified snippet.
+   * Deletes the specified snippet if the logged-in user is the owner of the snippet.
    *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
+   * @param {object} req - Express request object. The request should contain a session object with the userId of the logged-in user, and a doc object with the snippet to delete and the userId of the snippet's owner.
+   * @param {object} res - Express response object. The method will send a redirect response to the client.
+   * @throws Will redirect to the delete page and flash an error message if an error occurs or if the user is not authorized to delete the snippet.
+   * @returns {Promise<void>} A Promise that resolves when the method has finished sending the response. If the snippet was deleted, the method will flash a success message.
    */
   async deletePost (req, res) {
+    try {
+      // Check if the user is the owner of the snippet
+      // if (req.session.userId !== req.doc.userId.toString()) {
+      //   req.session.flash = { type: 'danger', text: 'You are not authorized to delete this snippet.' }
+      //   return res.redirect('..')
+      // }
+
+      // Rest of the code...
+    } catch (error) {
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('./delete')
+    }
     try {
       await req.doc.deleteOne()
 

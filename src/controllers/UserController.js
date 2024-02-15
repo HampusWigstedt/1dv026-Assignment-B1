@@ -47,37 +47,6 @@ export class UserController {
   }
 
   /**
-   * Logs in a user.
-   *
-   * @param {object} req - The request object.
-   * @param {object} res - The response object.
-   * @returns {Promise<void>} - A promise that resolves when the user is logged in.
-   */
-  async loginUser (req, res) {
-    const { username, password } = req.body
-
-    // Find the user by username
-    const user = await User.findOne({ username })
-
-    // If the user doesn't exist, send an error message
-    if (!user) {
-      req.session.flash = { type: 'danger', text: 'Wrong username or password' }
-      return res.redirect('home/index') // redirect back to the login page
-    }
-
-    // If the password is incorrect, send an error message
-    const auth = await bcrypt.compare(password, user.password)
-    if (!auth) {
-      req.session.flash = { type: 'danger', text: 'Wrong username or password' }
-      return res.redirect('home/index') // redirect back to the login page
-    }
-
-    // If the user exists and the password is correct, log in the user
-    req.session.userId = user._id
-    res.redirect('home/index') // redirect to your default page
-  }
-
-  /**
    * Displays a list of all users.
    *
    * @param {object} req - Express request object.
@@ -95,5 +64,41 @@ export class UserController {
     } catch (error) {
       next(error)
     }
+  }
+
+  /**
+   * Logs in a user.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @returns {void}
+   */
+  async loginUser (req, res) {
+    const { username, password } = req.body // Extract username and password from request body
+
+    // Find the user in the database
+    const user = await User.findOne({ username })
+
+    // If user doesn't exist, redirect to home page with an error message
+    if (!user) {
+      req.flash('error', 'Invalid username or password')
+      return res.redirect('/')
+    }
+
+    // If user exists, compare the provided password with the stored password
+    const isMatch = await user.comparePassword(password)
+
+    // If the passwords don't match, redirect to home page with an error message
+    if (!isMatch) {
+      req.flash('error', 'Invalid username or password')
+      return res.redirect('/')
+    }
+
+    // If the passwords match, the user is authenticated.
+    // You might want to create a session or a token here.
+    req.session.userId = user._id
+
+    // Redirect to the home page
+    return res.redirect('/')
   }
 }
