@@ -91,14 +91,43 @@ export class UserController {
     // If the passwords don't match, redirect to home page with an error message
     if (!isMatch) {
       req.flash('error', 'Invalid username or password')
+      console.log('Invalid username or password')
       return res.redirect('/')
     }
 
     // If the passwords match, the user is authenticated.
     // You might want to create a session or a token here.
     req.session.userId = user._id
+    console.log('User logged in:', user.username)
 
     // Redirect to the home page
     return res.redirect('/')
+  }
+
+  /**
+   * Renders the login form.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   */
+  LoginForm (req, res) {
+    res.render('login/login')
+  }
+
+  /**
+   * Logs out a user.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @returns {void}
+   */
+  logoutUser (req, res) {
+    req.session.destroy(err => {
+      if (err) {
+        console.log(err)
+      }
+      console.log('User logged out')
+      res.redirect('/')
+    })
   }
 }

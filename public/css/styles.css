@@ -73,3 +73,8 @@ code {
     border-radius: 5px;
     margin-top: 50px;
   }
+
+  .right-align-button {
+    float: right;
+    margin-left: auto;
+  }

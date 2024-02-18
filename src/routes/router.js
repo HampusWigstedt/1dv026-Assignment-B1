@@ -15,21 +15,6 @@ import { router as loginRouter } from './loginRouter.js'
 
 const router = express.Router()
 
-/**
- * Middleware for checking if user is authenticated.
- *
- * @param {object} req - The request object.
- * @param {object} res - The response object.
- * @param {Function} next - The next middleware function.
- */
-function checkAuth (req, res, next) {
-  if (!req.session.userId) {
-    res.redirect('/')
-  } else {
-    next()
-  }
-}
-
 // Registration route
 router.get('/register', (req, res) => {
   res.render('register/register')
@@ -44,11 +29,6 @@ router.post('/register', async (req, res) => {
   await user.save()
   req.session.userId = user._id
   res.redirect('/') // redirect to your default page
-})
-
-// Protected route example
-router.get('/protected', checkAuth, (req, res) => {
-  res.render('protected') // replace with your protected EJS view
 })
 
 router.use('/', homeRouter)
