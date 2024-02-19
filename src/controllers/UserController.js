@@ -74,34 +74,22 @@ export class UserController {
    * @returns {void}
    */
   async loginUser (req, res) {
-    const { username, password } = req.body // Extract username and password from request body
+    const { username, password } = req.body
 
-    // Find the user in the database
-    const user = await User.findOne({ username })
+    try {
+      // Use the authenticate method to validate the user
+      const user = await User.authenticate(username, password)
 
-    // If user doesn't exist, redirect to home page with an error message
-    if (!user) {
-      req.flash('error', 'Invalid username or password')
-      return res.redirect('/')
+      // If the user is valid, log them in
+      req.session.userId = user._id
+      res.locals.user = user
+      req.session.flash = { type: 'success', text: 'You have signed in' }
+      res.redirect('/')
+    } catch (error) {
+      // If the user is not valid, send an error message
+      req.session.flash = { type: 'danger', text: 'Invalid username or password' }
+      res.redirect('/login')
     }
-
-    // If user exists, compare the provided password with the stored password
-    const isMatch = await user.comparePassword(password)
-
-    // If the passwords don't match, redirect to home page with an error message
-    if (!isMatch) {
-      req.flash('error', 'Invalid username or password')
-      console.log('Invalid username or password')
-      return res.redirect('/')
-    }
-
-    // If the passwords match, the user is authenticated.
-    // You might want to create a session or a token here.
-    req.session.userId = user._id
-    console.log('User logged in:', user.username)
-
-    // Redirect to the home page
-    return res.redirect('/')
   }
 
   /**
