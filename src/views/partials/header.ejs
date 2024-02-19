@@ -11,9 +11,15 @@
         <div class="navbar-nav">
           <a class="nav-link" href="./">Home</a>
           <a class="nav-link" href="./snippets">Snippets</a>
+          <% if (user) { %>
+            <a class="nav-link" href="./snippets/create">Create snippet</a>
+                </div>
+              <a class="right-align-button" href="./login">Sign out</a>
+          <% } else { %>
+          </div>
+            <a class="right-align-button" href="./login">Sign In</a>
+          <% } %>
         </div>
-          <a class="right-align-button" href="./login">Sign In</a>
-          <a class="right-align-button" href="./logout">sign out</a>
     </div>
   </nav>
 </header>

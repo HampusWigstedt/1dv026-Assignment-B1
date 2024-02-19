@@ -85,6 +85,7 @@ export class UserController {
 
       // If the user is valid, log them in
       req.session.userId = user._id
+      req.session.user = user // Add the user object to the session
       res.locals.user = user
       req.session.flash = { type: 'success', text: 'You have signed in' }
       res.redirect('/')
@@ -113,13 +114,14 @@ export class UserController {
    * @returns {void}
    */
   logoutUser (req, res) {
+    console.log(req.session)
     req.session.destroy(err => {
       if (err) {
         console.log(err)
       }
+      console.log(req.session)
       console.log('User logged out')
-      req.session.flash = { type: 'success', text: 'You have signed out' }
-      res.redirect('/')
+      res.redirect('/?flash=' + encodeURIComponent('You have signed out'))
     })
   }
 }

@@ -120,10 +120,10 @@ export class SnippetController {
   async updatePost (req, res) {
     try {
     // Check if the user is the owner of the snippet
-      // if (req.session.userId !== req.doc.userId.toString()) {
-      //   req.session.flash = { type: 'danger', text: 'You are not authorized to update this snippet.' }
-      //   return res.redirect('..')
-      // }
+      if (req.session.userId !== req.doc.userId.toString()) {
+        req.session.flash = { type: 'danger', text: 'You are not authorized to update this snippet.' }
+        return res.redirect('..')
+      }
 
       if ('description' in req.body) req.doc.description = req.body.description
       if ('done' in req.body) req.doc.done = req.body.done === 'on'
@@ -167,10 +167,10 @@ export class SnippetController {
   async deletePost (req, res) {
     try {
       // Check if the user is the owner of the snippet
-      // if (req.session.userId !== req.doc.userId.toString()) {
-      //   req.session.flash = { type: 'danger', text: 'You are not authorized to delete this snippet.' }
-      //   return res.redirect('..')
-      // }
+      if (req.session.userId !== req.doc.userId.toString()) {
+        req.session.flash = { type: 'danger', text: 'You are not authorized to delete this snippet.' }
+        return res.redirect('..')
+      }
 
       // Rest of the code...
     } catch (error) {

@@ -64,8 +64,16 @@ try {
       delete req.session.flash
     }
 
+    // Check for a flash message in the query string
+    if (req.query.flash) {
+      res.locals.flash = { type: 'success', text: decodeURIComponent(req.query.flash) }
+    }
+
     // Pass the base URL to the views.
     res.locals.baseURL = baseURL
+
+    // Add the user to res.locals
+    res.locals.user = req.session.user
 
     next()
   })

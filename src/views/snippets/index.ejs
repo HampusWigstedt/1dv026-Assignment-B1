@@ -18,8 +18,10 @@
         <%= snippet.description %>
       </td>
       <td class="text-nowrap">
+        <% if (user && user._id == snippet.userId) { %>
         <a href="./snippets/<%= snippet.id %>/update">Update</a>
         <a href="./snippets/<%= snippet.id %>/delete">Delete</a>
+        <% } %>
       </td>
     </tr>
     <% } %>
