@@ -22,14 +22,10 @@ const UserSchema = new mongoose.Schema({
  */
 UserSchema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
-  console.log(user)
   if (!user) {
     throw new Error('User not found')
   }
   const match = await bcrypt.compare(password, user.password)
-  console.log('password: ' + password)
-  console.log('userPassword: ' + user.password)
-  console.log('Match: ' + match)
   if (!match) {
     throw new Error('Invalid password')
   }

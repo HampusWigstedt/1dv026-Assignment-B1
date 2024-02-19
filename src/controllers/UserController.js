@@ -114,12 +114,10 @@ export class UserController {
    * @returns {void}
    */
   logoutUser (req, res) {
-    console.log(req.session)
     req.session.destroy(err => {
       if (err) {
         console.log(err)
       }
-      console.log(req.session)
       console.log('User logged out')
       res.redirect('/?flash=' + encodeURIComponent('You have signed out'))
     })
