@@ -5,6 +5,8 @@ import { User } from '../models/UserModel.js'
  * Controller for managing user operations.
  */
 export class UserController {
+  // Other methods...
+
   /**
    * Registers a new user.
    *
@@ -32,14 +34,16 @@ export class UserController {
     })
 
     try {
+      const existingUser = await User.findOne({ username })
+      if (existingUser) {
+        req.session.flash = { type: 'danger', text: 'Username already exists' }
+        return res.redirect('/register')
+      }
+
       await user.save()
       req.session.userId = user._id
       res.redirect('/') // redirect to your default page
     } catch (err) {
-      if (err.code === 11000) {
-        req.session.flash = { type: 'danger', text: 'Username already exists' }
-        return res.redirect('/register')
-      }
       req.session.flash = { type: 'danger', text: 'Error' }
       return res.redirect('/register')
     }
