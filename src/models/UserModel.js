@@ -13,27 +13,24 @@ const UserSchema = new mongoose.Schema({
   }
 })
 
-UserSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10)
-  }
-  next()
-})
-
 /**
  * Compare the provided password with the user's password.
  *
- * @param {string} username - The username to compare.
- * @param {string} password - The password to compare.
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
  * @returns {Promise<boolean>} - A promise that resolves to true if the passwords match, false otherwise.
  */
 UserSchema.statics.authenticate = async function (username, password) {
   const user = await this.findOne({ username })
+  console.log(user)
   if (!user) {
-    throw new Error('Invalid username')
+    throw new Error('User not found')
   }
-  const validPassword = await bcrypt.compare(password, user.password)
-  if (!validPassword) {
+  const match = await bcrypt.compare(password, user.password)
+  console.log('password: ' + password)
+  console.log('userPassword: ' + user.password)
+  console.log('Match: ' + match)
+  if (!match) {
     throw new Error('Invalid password')
   }
   return user

@@ -46,6 +46,13 @@ try {
   }
   app.use(session(sessionOptions))
 
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // set to true later if app is on https
+  }))
+
   // Add this line to use connect-flash middleware
   app.use(flash())
 
@@ -65,6 +72,14 @@ try {
 
   // Register routes.
   app.use('/', router)
+
+  // Dashboard route
+  app.get('/dashboard', (req, res) => {
+    if (!req.session.userId) {
+      return res.redirect('/login')
+    }
+  // User is logged in, proceed with dashboard rendering
+  })
 
   // Error handler.
   app.use((err, req, res, next) => {

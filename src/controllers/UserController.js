@@ -5,8 +5,6 @@ import { User } from '../models/UserModel.js'
  * Controller for managing user operations.
  */
 export class UserController {
-  // Other methods...
-
   /**
    * Registers a new user.
    *
@@ -32,17 +30,18 @@ export class UserController {
       username,
       password: hashedPassword
     })
+
     try {
       await user.save()
       req.session.userId = user._id
       res.redirect('/') // redirect to your default page
     } catch (err) {
       if (err.code === 11000) {
-        // This error occurs when a duplicate username is found
         req.session.flash = { type: 'danger', text: 'Username already exists' }
-      } else {
-        req.session.flash = { type: 'danger', text: 'Error' }
+        return res.redirect('/register')
       }
+      req.session.flash = { type: 'danger', text: 'Error' }
+      return res.redirect('/register')
     }
   }
 
@@ -115,6 +114,7 @@ export class UserController {
         console.log(err)
       }
       console.log('User logged out')
+      req.session.flash = { type: 'success', text: 'You have signed out' }
       res.redirect('/')
     })
   }
