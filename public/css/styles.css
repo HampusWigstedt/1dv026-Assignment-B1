@@ -44,11 +44,11 @@ code {
 
 #box {
 	background-color: whitesmoke;
-	width: 500px; 
-	height: 600px;
+	width: 400px; 
+	height: 400px;
 	margin: 0 auto;
 	position: absolute;
-	top: 50%;
+	top: 55%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	border: 5px solid black; 
