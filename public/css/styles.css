@@ -78,3 +78,11 @@ code {
     float: right;
     margin-left: auto;
   }
+
+  textarea {
+    resize: none;
+    height: 200px;
+    width: 600px;
+    white-space: pre-wrap;
+  }
+

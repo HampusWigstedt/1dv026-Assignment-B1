@@ -15,7 +15,9 @@
         <input class="form-check-input" type="checkbox" id="doneCheck" disabled <% if (snippet.done) { %> checked <% } %> />
       </td>
       <td class="w-100 <% if (snippet.done) { %> text-muted <% } %>">
-        <%- snippet.description.replace(/\n/g, '<br>') %>
+        <textarea>
+        <%= snippet.description %>
+      </textarea>
       </td>
       <td class="text-nowrap">
         <% if (user && user._id == snippet.userId) { %>

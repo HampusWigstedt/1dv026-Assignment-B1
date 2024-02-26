@@ -11,6 +11,8 @@ export const router = express.Router()
 
 const controller = new SnippetController()
 
+// lägg till en autherice för create, update och delete
+
 // Provide req.doc to the route if :id is present in the route path.
 router.param('id', (req, res, next, id) => controller.loadsnippetDocument(req, res, next, id))
 
