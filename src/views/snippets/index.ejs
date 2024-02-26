@@ -11,7 +11,7 @@
     <% for (const snippet of viewData.snippets) { %>
     <tr>
       <td class="w-100 <% if (snippet.done) { %> text-muted <% } %>">
-        <textarea>
+        <textarea readonly>
         <%= snippet.description %>
       </textarea>
       </td>

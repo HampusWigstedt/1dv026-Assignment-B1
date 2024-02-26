@@ -3,6 +3,7 @@ import expressLayouts from 'express-ejs-layouts'
 import session from 'express-session'
 import flash from 'connect-flash'
 import logger from 'morgan'
+import helmet from 'helmet'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { connectToDatabase } from './config/mongoose.js'
@@ -15,6 +16,8 @@ try {
 
   // Creates an Express application.
   const app = express()
+
+  app.use(helmet())
 
   // Get the directory name of this module's path.
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
@@ -98,6 +101,13 @@ try {
       res
         .status(404)
         .sendFile(join(directoryFullName, 'views', 'errors', '404.html'))
+      return
+    }
+
+    if (err.status === 401) {
+      res
+        .status(401)
+        .render('errors/unauthorized', { error: err })
       return
     }
 

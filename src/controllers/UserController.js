@@ -27,6 +27,12 @@ export class UserController {
       return res.redirect('/register')
     }
 
+    const usernameRegex = /^[a-zA-Z0-9]+$/
+    if (!usernameRegex.test(username) || !usernameRegex.test(password)) {
+      req.session.flash = { type: 'danger', text: 'Username and password can only contain letters and numbers' }
+      return res.redirect('/register')
+    }
+
     // Generate a salt and hash the password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
@@ -52,34 +58,21 @@ export class UserController {
   }
 
   /**
-   * Displays a list of all users.
-   *
-   * @param {object} req - Express request object.
-   * @param {object} res - Express response object.
-   * @param {Function} next - Express next middleware function.
-   */
-  async index (req, res, next) {
-    try {
-      const viewData = {
-        users: (await User.find())
-          .map(userDoc => userDoc.toObject())
-      }
-
-      res.render('register/register', { viewData })
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  /**
    * Logs in a user.
    *
    * @param {object} req - The request object.
    * @param {object} res - The response object.
+   * @param {Function} next - The next middleware function.
    * @returns {void}
    */
-  async loginUser (req, res) {
+  async loginUser (req, res, next) {
     const { username, password } = req.body
+
+    const usernameRegex = /^[a-zA-Z0-9]+$/
+    if (!usernameRegex.test(username) || !usernameRegex.test(password)) {
+      req.session.flash = { type: 'danger', text: 'Username and password can only contain letters and numbers' }
+      return res.redirect('/login')
+    }
 
     try {
       // Use the authenticate method to validate the user
@@ -93,6 +86,9 @@ export class UserController {
       res.redirect('/')
     } catch (error) {
       // If the user is not valid, send an error message
+      const err = new Error('Unauthorized: Invalid username or password')
+      err.status = 401
+      next(err)
       req.session.flash = { type: 'danger', text: 'Invalid username or password' }
       res.redirect('/login')
     }

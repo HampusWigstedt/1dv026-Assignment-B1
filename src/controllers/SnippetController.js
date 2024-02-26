@@ -78,11 +78,10 @@ export class SnippetController {
    */
   async createPost (req, res) {
     try {
-      const { description, done } = req.body
+      const { description } = req.body
 
       await snippetModel.create({
         description,
-        done: done === 'on',
         userId: req.session.userId // Store the user ID in the snippet document
       })
 
@@ -126,7 +125,6 @@ export class SnippetController {
       }
 
       if ('description' in req.body) req.doc.description = req.body.description
-      if ('done' in req.body) req.doc.done = req.body.done === 'on'
 
       if (req.doc.isModified()) {
         await req.doc.save()
@@ -185,6 +183,24 @@ export class SnippetController {
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('./delete')
+    }
+  }
+
+  /**
+   * Middleware to ensure that the user is authenticated.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Next middleware function.
+   */
+  async ensureAuthenticated (req, res, next) {
+    if (req.session.userId) {
+      // If the user is authenticated, proceed to the next middleware or route handler
+      next()
+    } else {
+      // If the user is not authenticated, redirect them to the login page
+      req.session.flash = { type: 'danger', text: 'You must be logged in to view this page' }
+      res.redirect('/login')
     }
   }
 }
