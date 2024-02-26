@@ -5,7 +5,7 @@ import { User } from '../models/UserModel.js'
  * Controller for managing user operations.
  */
 export class UserController {
-  // Other methods...
+  //
 
   /**
    * Registers a new user.
@@ -20,10 +20,13 @@ export class UserController {
     // Validate the username and password
     if (!username || !password) {
       req.session.flash = { type: 'danger', text: 'Username and password are required' }
+      return res.redirect('/register')
     }
     if (password.length < 8) {
       req.session.flash = { type: 'danger', text: 'Password must be at least 8 characters long' }
+      return res.redirect('/register')
     }
+
     // Generate a salt and hash the password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
@@ -34,17 +37,16 @@ export class UserController {
     })
 
     try {
-      const existingUser = await User.findOne({ username })
-      if (existingUser) {
-        req.session.flash = { type: 'danger', text: 'Username already exists' }
-        return res.redirect('/register')
-      }
-
       await user.save()
       req.session.userId = user._id
+      req.session.flash = { type: 'success', text: 'You have registered a new account. Please sign in' }
       res.redirect('/') // redirect to your default page
     } catch (err) {
-      req.session.flash = { type: 'danger', text: 'Error' }
+      if (err.name === 'MongoError' && err.code === 11000) {
+        req.session.flash = { type: 'danger', text: 'Username already exists' }
+      } else {
+        req.session.flash = { type: 'danger', text: 'Username already exists' }
+      }
       return res.redirect('/register')
     }
   }

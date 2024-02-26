@@ -6,12 +6,11 @@
 
 import express from 'express'
 import http from 'node:http'
-import bcrypt from 'bcrypt'
-import { User } from '../models/UserModel.js'
 import { router as homeRouter } from './homeRouter.js'
 import { router as snippetRouter } from './snippetRouter.js'
 import { router as registerRouter } from './registerRouter.js'
 import { router as loginRouter } from './loginRouter.js'
+import { UserController } from '../controllers/UserController.js'
 
 const router = express.Router()
 
@@ -20,16 +19,9 @@ router.get('/register', (req, res) => {
   res.render('register/register')
 })
 
-router.post('/register', async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10)
-  const user = new User({
-    username: req.body.username,
-    password: hashedPassword
-  })
-  await user.save()
-  req.session.userId = user._id
-  res.redirect('/') // redirect to your default page
-})
+const userController = new UserController()
+
+router.post('/register', userController.registerNewUser.bind(userController))
 
 router.use('/', homeRouter)
 router.use('/snippets', snippetRouter)
