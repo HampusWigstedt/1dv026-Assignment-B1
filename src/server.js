@@ -111,6 +111,13 @@ try {
       return
     }
 
+    if (err.status === 403) {
+      res
+        .status(403)
+        .render('errors/forbidden', { error: err })
+      return
+    }
+
     // 500 Internal Server Error (in production, all other errors send this response).
     if (process.env.NODE_ENV === 'production') {
       res

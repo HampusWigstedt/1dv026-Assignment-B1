@@ -109,16 +109,23 @@ export class SnippetController {
   }
 
   /**
-   * Updates a specific snippet if the logged-in user is the owner of the snippet.
+   * Update post.
    *
-   * @param {object} req - Express request object. The request should contain a session object with the userId of the logged-in user, and a doc object with the snippet to update and the userId of the snippet's owner.
-   * @param {object} res - Express response object. The method will send a redirect response to the client.
-   * @throws Will redirect to the update page and flash an error message if an error occurs or if the user is not authorized to update the snippet.
-   * @returns {Promise<void>} A Promise that resolves when the method has finished sending the response. If the snippet was updated, the method will flash a success message. If the snippet was not updated because there was nothing to update, the method will flash an info message.
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @param {Function} next - The next middleware function.
+   * @returns {void}
    */
-  async updatePost (req, res) {
+  async updatePost (req, res, next) {
     try {
-    // Check if the user is the owner of the snippet
+      // Check if the user is authenticated
+      if (!req.session.userId) {
+        const err = new Error('Snippet not found')
+        err.status = 404
+        return next(err)
+      }
+
+      // Check if the user is the owner of the snippet
       if (req.session.userId !== req.doc.userId.toString()) {
         req.session.flash = { type: 'danger', text: 'You are not authorized to update this snippet.' }
         return res.redirect('..')
@@ -159,15 +166,25 @@ export class SnippetController {
    *
    * @param {object} req - Express request object. The request should contain a session object with the userId of the logged-in user, and a doc object with the snippet to delete and the userId of the snippet's owner.
    * @param {object} res - Express response object. The method will send a redirect response to the client.
+   * @param {Function} next - The next middleware function in the application’s request-response cycle.
    * @throws Will redirect to the delete page and flash an error message if an error occurs or if the user is not authorized to delete the snippet.
    * @returns {Promise<void>} A Promise that resolves when the method has finished sending the response. If the snippet was deleted, the method will flash a success message.
    */
-  async deletePost (req, res) {
+  async deletePost (req, res, next) {
     try {
+      // Check if the user is authenticated
+      if (!req.session.userId) {
+        const err = new Error('Snippet not found')
+        err.status = 404
+        return next(err)
+      }
+
       // Check if the user is the owner of the snippet
       if (req.session.userId !== req.doc.userId.toString()) {
-        req.session.flash = { type: 'danger', text: 'You are not authorized to delete this snippet.' }
-        return res.redirect('..')
+        const err = new Error('You are not authorized to update this snippet')
+        err.status = 403
+        err.flash = { type: 'danger', text: 'You are not authorized to update this snippet' }
+        return next(err)
       }
 
       // Rest of the code...
