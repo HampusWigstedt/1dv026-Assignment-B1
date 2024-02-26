@@ -8,14 +8,6 @@
     <input type="text" class="form-control" id="descriptionInput" placeholder="Update snippet description here" value="<%= viewData?.description %>" disabled />
   </div>
   <div class="col-12">
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="doneCheck" disabled <% if (viewData?.done) { %> checked <% } %> />
-      <label class="form-check-label" for="doneCheck">
-        Done
-      </label>
-    </div>
-  </div>
-  <div class="col-12">
     <button type="submit" class="btn btn-primary" autofocus="autofocus">Delete</button>
   </div>
 </form>
