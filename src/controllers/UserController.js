@@ -100,8 +100,8 @@ export class UserController {
    * @param {object} req - The request object.
    * @param {object} res - The response object.
    */
-  LoginForm (req, res) {
-    res.render('login/login')
+  LoginForm = (req, res) => {
+    res.render('login/login', { csrfToken: req.csrfToken() })
   }
 
   /**

@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url'
 import { connectToDatabase } from './config/mongoose.js'
 import { sessionOptions } from './config/sessionOptions.js'
 import { router } from './routes/router.js'
+import csurf from 'csurf'
 
 try {
   // Connect to MongoDB.
@@ -17,6 +18,7 @@ try {
   // Creates an Express application.
   const app = express()
 
+  // security middleware helmet
   app.use(helmet())
 
   // Get the directory name of this module's path.
@@ -55,6 +57,10 @@ try {
     saveUninitialized: false,
     cookie: { secure: false } // set to true later if app is on https
   }))
+
+  // security middleware csurf
+  const csrfProtection = csurf()
+  app.use(csrfProtection)
 
   // Add this line to use connect-flash middleware
   app.use(flash())
