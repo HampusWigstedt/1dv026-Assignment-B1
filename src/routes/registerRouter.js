@@ -11,6 +11,6 @@ export const router = express.Router()
 
 const controller = new UserController()
 
-router.get('/register', (req, res) => controller.RegisterForm(req, res))
+router.get('/register', controller.redirectIfLoggedIn, (req, res) => controller.RegisterForm(req, res))
 
 router.post('/register', (req, res) => controller.registerNewUser(req, res))

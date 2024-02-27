@@ -6,7 +6,7 @@ export const router = express.Router()
 const controller = new UserController()
 
 // Route for displaying login form
-router.get('/login', (req, res) => controller.LoginForm(req, res))
+router.get('/login', controller.redirectIfLoggedIn, (req, res) => controller.LoginForm(req, res))
 
 // Route for handling login form submission
 router.post('/login', (req, res, next) => {

@@ -117,6 +117,22 @@ export class UserController {
   }
 
   /**
+   * Redirects to the home page if the user is already logged in.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @param {Function} next - The next middleware function.
+   * @returns {void}
+   */
+  redirectIfLoggedIn (req, res, next) {
+    if (req.session && req.session.user) {
+      res.redirect('./') // Redirect to home page if user is logged in
+    } else {
+      next()
+    }
+  }
+
+  /**
    * Logs out a user.
    *
    * @param {object} req - The request object.
