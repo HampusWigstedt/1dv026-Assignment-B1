@@ -20,17 +20,17 @@ export class UserController {
     // Validate the username and password
     if (!username || !password) {
       req.session.flash = { type: 'danger', text: 'Username and password are required' }
-      return res.redirect('/register')
+      return res.redirect('./register')
     }
     if (password.length < 8) {
       req.session.flash = { type: 'danger', text: 'Password must be at least 8 characters long' }
-      return res.redirect('/register')
+      return res.redirect('./register')
     }
 
     const usernameRegex = /^[a-zA-Z0-9]+$/
     if (!usernameRegex.test(username) || !usernameRegex.test(password)) {
       req.session.flash = { type: 'danger', text: 'Username and password can only contain letters and numbers' }
-      return res.redirect('/register')
+      return res.redirect('./register')
     }
 
     // Generate a salt and hash the password
@@ -46,14 +46,14 @@ export class UserController {
       await user.save()
       req.session.userId = user._id
       req.session.flash = { type: 'success', text: 'You have registered a new account. Please sign in' }
-      res.redirect('/') // redirect to your default page
+      res.redirect('./') // redirect to your default page
     } catch (err) {
       if (err.name === 'MongoError' && err.code === 11000) {
         req.session.flash = { type: 'danger', text: 'Username already exists' }
       } else {
         req.session.flash = { type: 'danger', text: 'Username already exists' }
       }
-      return res.redirect('/register')
+      return res.redirect('./register')
     }
   }
 
@@ -83,7 +83,7 @@ export class UserController {
     const usernameRegex = /^[a-zA-Z0-9]+$/
     if (!usernameRegex.test(username) || !usernameRegex.test(password)) {
       req.session.flash = { type: 'danger', text: 'Username and password can only contain letters and numbers' }
-      return res.redirect('/login')
+      return res.redirect('./login')
     }
 
     try {
@@ -95,14 +95,14 @@ export class UserController {
       req.session.user = user // Add the user object to the session
       res.locals.user = user
       req.session.flash = { type: 'success', text: 'You have signed in' }
-      res.redirect('/')
+      res.redirect('./')
     } catch (error) {
       // If the user is not valid, send an error message
       const err = new Error('Unauthorized: Invalid username or password')
       err.status = 401
       next(err)
       req.session.flash = { type: 'danger', text: 'Invalid username or password' }
-      res.redirect('/login')
+      res.redirect('./login')
     }
   }
 
@@ -129,7 +129,7 @@ export class UserController {
         console.log(err)
       }
       console.log('User logged out')
-      res.redirect('/?flash=' + encodeURIComponent('You have signed out'))
+      res.redirect('./')
     })
   }
 }

@@ -55,7 +55,7 @@ try {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // set to true later if app is on https
+    cookie: { secure: true }
   }))
 
   // security middleware csurf
@@ -143,10 +143,9 @@ try {
       .render('errors/error', { error: err })
   })
 
-  // Starts the HTTP server listening for connections.
-  const server = app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${server.address().port}`)
-    console.log('Press Ctrl-C to terminate...')
+  const PORT = process.env.PORT || 3000 // or any other port you prefer
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
   })
 } catch (err) {
   console.error(err)

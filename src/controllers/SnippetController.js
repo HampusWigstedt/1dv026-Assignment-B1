@@ -221,7 +221,7 @@ export class SnippetController {
     } else {
       // If the user is not authenticated, redirect them to the login page
       req.session.flash = { type: 'danger', text: 'You must be logged in to view this page' }
-      res.redirect('/login')
+      res.redirect('./login')
     }
   }
 }
