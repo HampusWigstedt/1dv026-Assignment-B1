@@ -62,7 +62,7 @@ try {
   const csrfProtection = csurf()
   app.use(csrfProtection)
 
-  // Add this line to use connect-flash middleware
+  // Use connect-flash middleware
   app.use(flash())
 
   // Middleware to be executed before the routes.
@@ -143,7 +143,7 @@ try {
       .render('errors/error', { error: err })
   })
 
-  const PORT = process.env.PORT || 3000 // or any other port you prefer
+  const PORT = process.env.PORT || 3000
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
