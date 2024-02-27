@@ -15,9 +15,9 @@ const schema = new mongoose.Schema({
     trim: true,
     minlength: 1
   },
-  userId: { // Add this field
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Replace 'User' with the name of your user model if it's different
+    ref: 'User',
     required: true
   }
 })

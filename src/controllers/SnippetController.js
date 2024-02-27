@@ -129,8 +129,9 @@ export class SnippetController {
 
       // Check if the user is the owner of the snippet
       if (req.session.userId !== req.doc.userId.toString()) {
-        req.session.flash = { type: 'danger', text: 'You are not authorized to update this snippet.' }
-        return res.redirect('..')
+        const err = new Error('You are not authorized to update this snippet')
+        err.status = 403
+        return next(err)
       }
 
       if ('description' in req.body) req.doc.description = req.body.description
@@ -185,9 +186,8 @@ export class SnippetController {
 
       // Check if the user is the owner of the snippet
       if (req.session.userId !== req.doc.userId.toString()) {
-        const err = new Error('You are not authorized to update this snippet')
+        const err = new Error('You are not authorized to delete this snippet')
         err.status = 403
-        err.flash = { type: 'danger', text: 'You are not authorized to update this snippet' }
         return next(err)
       }
 
@@ -219,9 +219,9 @@ export class SnippetController {
       // If the user is authenticated, proceed to the next middleware or route handler
       next()
     } else {
-      // If the user is not authenticated, redirect them to the login page
-      req.session.flash = { type: 'danger', text: 'You must be logged in to view this page' }
-      res.redirect('./login')
+      const err = new Error('Unauthorized: You must be logged in to access this resource.')
+      err.status = 404
+      next(err)
     }
   }
 }
