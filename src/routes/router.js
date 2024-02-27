@@ -14,11 +14,6 @@ import { UserController } from '../controllers/UserController.js'
 
 const router = express.Router()
 
-// Registration route
-router.get('/register', (req, res) => {
-  res.render('register/register')
-})
-
 const userController = new UserController()
 
 router.post('/register', userController.registerNewUser.bind(userController))

@@ -67,7 +67,7 @@ export class SnippetController {
    * @param {object} res - Express response object.
    */
   async create (req, res) {
-    res.render('snippets/create')
+    res.render('snippets/create', { csrfToken: req.csrfToken() })
   }
 
   /**
@@ -101,7 +101,9 @@ export class SnippetController {
    */
   async update (req, res) {
     try {
-      res.render('snippets/update', { viewData: req.doc.toObject() })
+      const viewData = req.doc.toObject()
+      viewData.csrfToken = req.csrfToken()
+      res.render('snippets/update', { viewData })
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')
@@ -154,7 +156,9 @@ export class SnippetController {
    */
   async delete (req, res) {
     try {
-      res.render('snippets/delete', { viewData: req.doc.toObject() })
+      const viewData = req.doc.toObject()
+      viewData.csrfToken = req.csrfToken()
+      res.render('snippets/delete', { viewData })
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('..')

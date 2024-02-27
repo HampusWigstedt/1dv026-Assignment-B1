@@ -57,6 +57,18 @@ export class UserController {
     }
   }
 
+  // Registration route
+  /**
+   * Renders the registration form.
+   *
+   * @param {object} req - The request object.
+   * @param {object} res - The response object.
+   * @returns {void}
+   */
+  RegisterForm = (req, res) => {
+    res.render('register/register', { csrfToken: req.csrfToken() })
+  }
+
   /**
    * Logs in a user.
    *

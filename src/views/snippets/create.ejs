@@ -6,6 +6,7 @@
     </label>
     <textarea class="form-control" id="descriptionInput" name="description" placeholder="Enter a new snippet description here" required autofocus></textarea>
   </div>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <div class="col-12">
     <button type="submit" class="btn btn-primary">Create</button>
   </div>

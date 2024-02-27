@@ -11,7 +11,7 @@ export const router = express.Router()
 
 const controller = new UserController()
 
-router.get('/', (req, res, next) => controller.index(req, res, next))
+// router.get('/', (req, res, next) => controller.index(req, res, next))
 
 router.get('/register', (req, res) => controller.RegisterForm(req, res))
 
